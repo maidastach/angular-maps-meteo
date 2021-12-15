@@ -1,13 +1,19 @@
 <div id="map-container">
     <div id="map">
       
-    </div><div class="popup"></div>
+    </div><div *ngIf='weather' class="popup">
+      Today<br>
+      Wind Speed: {{weather.today.wind}}<br>
+      Precipitations: {{weather.today.precipitation}}<br>
+      Temperature: {{weather.today.temperature}}<br><br><br>
+
+      Tomorrow<br>
+      Wind Speed: {{weather.tomorrow.wind}}<br>
+      Precipitations: {{weather.tomorrow.precipitation}}<br>
+      Temperature: {{weather.tomorrow.temperature}}<br>
+    </div>
 </div>
 
-  <!-- <div id="map">
-    <div class="popup"></div>
-
-  </div> -->
   <div id="infowindow-content">
     <span id="place-name" class="title"></span><br />
     <span id="place-address"></span>

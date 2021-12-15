@@ -16,11 +16,8 @@ export class MapService {
   autocomplete!: any;
   markers: any[] = []
 
-  temperature!: any;
-  precipitation!: any;
-  wind!: any;
-  weather!: any;
-
+  weatherSource = new BehaviorSubject<any>('');
+  weather = this.weatherSource.asObservable()
 
   directionsService = new google.maps.DirectionsService();
   directionsRenderer = new google.maps.DirectionsRenderer();
@@ -65,7 +62,25 @@ export class MapService {
 
       this.weatherService
         .getWeather({ lat: position.lat(), lng: position.lng() })
-          .subscribe(data => {console.log(data); this.weather = data })
+          .subscribe(data => {
+            this.weatherSource.next({
+              today: {
+                wind: `${data.daily.windspeed_10m_max[0]} ${data.daily_units.windspeed_10m_max}`,
+                precipitation: `${data.daily.precipitation_sum[0]} ${data.daily_units.precipitation_sum}`,
+                temperature: (data.daily.temperature_2m_max[0] + data.daily.temperature_2m_min[0]) / 2,
+              },
+              tomorrow: {
+                wind: `${data.daily.windspeed_10m_max[1]} ${data.daily_units.windspeed_10m_max}`,
+                precipitation: `${data.daily.precipitation_sum[1]} ${data.daily_units.precipitation_sum}`,
+                temperature: (data.daily.temperature_2m_max[1] + data.daily.temperature_2m_min[1]) / 2,
+              },
+            })
+            
+          })
+
+         // console.log(JSON.stringify(this.map));
+          
+        // window.localStorage.setItem('map', JSON.stringify(this.map))
         
       google.maps.event.addListener(
         marker, 
@@ -124,7 +139,25 @@ export class MapService {
 
       this.weatherService
         .getWeather({ lat: place.geometry.location.lat(), lng: place.geometry.location.lng() })
-          .subscribe(data => {console.log(data); this.weather = data })
+          .subscribe(data => {
+            console.log(data); 
+
+            this.weatherSource.next({
+              today: {
+                wind: `${data.daily.windspeed_10m_max[0]} ${data.daily_units.windspeed_10m_max}`,
+                precipitation: `${data.daily.precipitation_sum[0]} ${data.daily_units.precipitation_sum}`,
+                temperature: (data.daily.temperature_2m_max[0] + data.daily.temperature_2m_min[0]) / 2,
+              },
+              tomorrow: {
+                wind: `${data.daily.windspeed_10m_max[1]} ${data.daily_units.windspeed_10m_max}`,
+                precipitation: `${data.daily.precipitation_sum[1]} ${data.daily_units.precipitation_sum}`,
+                temperature: (data.daily.temperature_2m_max[1] + data.daily.temperature_2m_min[1]) / 2,
+              },
+            })
+            
+          })
+
+        // window.localStorage.setItem('map', JSON.stringify(this.map))
 
       google.maps.event.addListener(
         marker, 
@@ -180,11 +213,12 @@ export class MapService {
         
       }
     );
-
-    console.log(start, end);
-    
   }
   
+  restoreMap(map: any): void
+  {
+    this.map = new google.maps.Map(map)
+  }
 
   
 }

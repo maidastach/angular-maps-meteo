@@ -12,6 +12,7 @@ export class WeatherService {
 
   getWeather(request: any): Observable<any>
   {
-    return this.http.get<any>(`https://api.open-meteo.com/v1/forecast?latitude=${request.lat}&longitude=${request.lng}&hourly=precipitation,windspeed_180m&daily=temperature_2m_max,temperature_2m_min&timezone=Australia%2FSydney`)
+    return this.http.get<any>(
+      `https://api.open-meteo.com/v1/forecast?latitude=${request.lat}&longitude=${request.lng}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,windspeed_10m_max&timezone=Australia%2FSydney`)
   }
 }

@@ -12,8 +12,17 @@ export class AppComponent implements AfterViewInit {
   constructor(private mapService: MapService) { }
 
   ngAfterViewInit(): void {
-    this.mapService.initMap()
-    this.mapService.autoComplete()
+    if(window.localStorage.getItem('map'))
+    {
+      const map = window.localStorage.getItem('map');
+      this.mapService.restoreMap(JSON.parse(map || 'no map'))
+      this.mapService.autoComplete()
+    }
+    else{
+      this.mapService.initMap()
+      this.mapService.autoComplete()
+    }
+    
   }
 
   title = 'stepinsigthInterview';
