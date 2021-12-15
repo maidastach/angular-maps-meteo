@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { WeatherService } from '../weather/weather.service';
 declare const google: any;
 
 @Injectable({
@@ -15,10 +16,16 @@ export class MapService {
   autocomplete!: any;
   markers: any[] = []
 
+  temperature!: any;
+  precipitation!: any;
+  wind!: any;
+  weather!: any;
+
+
   directionsService = new google.maps.DirectionsService();
   directionsRenderer = new google.maps.DirectionsRenderer();
 
-  constructor() { }
+  constructor(private weatherService: WeatherService) { }
 
   initMap(lat: number = -33.867, lng: number = 151.195): void //default view on Sydney
   {
@@ -55,6 +62,10 @@ export class MapService {
       this.markers.push(marker);
 
       this.map.setCenter(position)
+
+      this.weatherService
+        .getWeather({ lat: position.lat(), lng: position.lng() })
+          .subscribe(data => {console.log(data); this.weather = data })
         
       google.maps.event.addListener(
         marker, 
@@ -108,10 +119,12 @@ export class MapService {
       )
       
       this.markers.push(marker);
-
-
-
+        
       this.map.setCenter(place.geometry.location)
+
+      this.weatherService
+        .getWeather({ lat: place.geometry.location.lat(), lng: place.geometry.location.lng() })
+          .subscribe(data => {console.log(data); this.weather = data })
 
       google.maps.event.addListener(
         marker, 
