@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { DirectionsService } from './directions.service';
 declare const google: any;
 
 @Injectable({
@@ -16,8 +15,10 @@ export class MapService {
   autocomplete!: any;
   markers: any[] = []
 
+  directionsService = new google.maps.DirectionsService();
+  directionsRenderer = new google.maps.DirectionsRenderer();
 
-  constructor(private directionsService: DirectionsService) { }
+  constructor() { }
 
   initMap(lat: number = -33.867, lng: number = 151.195): void //default view on Sydney
   {
@@ -29,11 +30,14 @@ export class MapService {
         { center: this.location, zoom: 15, mapTypeControl: false }
     )
 
+    this.directionsRenderer.setMap(this.map)
+
     const addMarker = (position: any) => 
     {
       this.placeSource.next('User Marker')
       if(this.markers.length === 2)
       {
+        this.directionsRenderer.setMap(null)
         for (let i = 0; i < this.markers.length; i++) 
           this.markers[i].setMap(null);
         this.markers = [];
@@ -61,6 +65,8 @@ export class MapService {
           this.infowindow.open(this.map);
         }
       );
+      if(this.markers.length === 2)
+        this.calcRoute(this.markers[0], this.markers[1])
     }
       
       this.map.addListener(
@@ -87,6 +93,7 @@ export class MapService {
 
       if(this.markers.length === 2)
       {
+        this.directionsRenderer.setMap(null)
         for (let i = 0; i < this.markers.length; i++) 
           this.markers[i].setMap(null);
         this.markers = [];
@@ -115,6 +122,13 @@ export class MapService {
           this.infowindow.open(this.map);
         }
       );
+
+      if(this.markers.length === 2)
+      {
+        this.calcRoute(this.markers[0], this.markers[1])
+
+      }
+        
     }
 
     const onPlaceChanged = () =>
@@ -132,6 +146,32 @@ export class MapService {
 
     this.autocomplete.addListener('place_changed', onPlaceChanged)
   }
+
+  calcRoute(start: any, end: any): void {
+    this.directionsRenderer.setMap(this.map)
+
+    const selectedMode = 'DRIVING';
+    const request = {
+        origin: new google.maps.LatLng(start.position.lat(), start.position.lng()),
+        destination: new google.maps.LatLng(end.position.lat(), end.position.lng()),
+        travelMode: google.maps.TravelMode[selectedMode]
+    };
+    this.directionsService.route(
+      request, 
+      (response: any, status: any) =>
+      {
+        if (status == 'OK')
+          this.directionsRenderer.setDirections(response);
+          console.log(response);
+          
+        
+      }
+    );
+
+    console.log(start, end);
+    
+  }
+  
 
   
 }
