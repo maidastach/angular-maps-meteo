@@ -24,9 +24,7 @@ export class HeaderComponent implements OnInit {
   }
 
   searchPlace(event: any): void
-  {
-    console.log(event);
-    
+  {    
   }
 
   autoComplete()

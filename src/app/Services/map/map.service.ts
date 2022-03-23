@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { WeatherService } from '../weather/weather.service';
-declare const google: any;
+import { } from 'googlemaps';
+
+// declare const google: any;
 
 @Injectable({
   providedIn: 'root'
 })
 export class MapService {
-  map!: any
+  map!: google.maps.Map;
   service!: any;
   infowindow!: any;
   location!: any
@@ -18,6 +20,9 @@ export class MapService {
 
   weatherSource = new BehaviorSubject<any>('');
   weather = this.weatherSource.asObservable()
+
+  weatherLoadingSource = new BehaviorSubject<boolean>(false);
+  weatherLoading = this.weatherLoadingSource.asObservable()
 
   directionsService = new google.maps.DirectionsService();
   directionsRenderer = new google.maps.DirectionsRenderer();
@@ -60,6 +65,8 @@ export class MapService {
 
       this.map.setCenter(position)
 
+      this.weatherLoadingSource.next(true)
+
       this.weatherService
         .getWeather({ lat: position.lat(), lng: position.lng() })
           .subscribe(data => {
@@ -75,7 +82,7 @@ export class MapService {
                 temperature: (data.daily.temperature_2m_max[1] + data.daily.temperature_2m_min[1]) / 2,
               },
             })
-            
+            this.weatherLoadingSource.next(false)
           })
 
          // console.log(JSON.stringify(this.map));
@@ -105,7 +112,7 @@ export class MapService {
   autoComplete(): void
   {
     this.autocomplete = new google.maps.places.Autocomplete(
-      document.getElementById('autocomplete'),
+      document.getElementById('autocomplete')! as HTMLInputElement,
       {
         fields: ['place_id', 'geometry', 'name', 'address_components'],
         componentRestrictions: { country: "au" },
@@ -137,12 +144,15 @@ export class MapService {
         
       this.map.setCenter(place.geometry.location)
 
+      this.weatherLoadingSource.next(true)
+
       this.weatherService
         .getWeather({ lat: place.geometry.location.lat(), lng: place.geometry.location.lng() })
           .subscribe(data => {
-            console.log(data); 
+            this.weatherLoadingSource.next(false)
 
-            this.weatherSource.next({
+            this.weatherSource.next({ 
+              
               today: {
                 wind: `${data.daily.windspeed_10m_max[0]} ${data.daily_units.windspeed_10m_max}`,
                 precipitation: `${data.daily.precipitation_sum[0]} ${data.daily_units.precipitation_sum}`,
@@ -154,9 +164,7 @@ export class MapService {
                 temperature: (data.daily.temperature_2m_max[1] + data.daily.temperature_2m_min[1]) / 2,
               },
             })
-            
           })
-
         // window.localStorage.setItem('map', JSON.stringify(this.map))
 
       google.maps.event.addListener(
@@ -208,9 +216,6 @@ export class MapService {
       {
         if (status == 'OK')
           this.directionsRenderer.setDirections(response);
-          console.log(response);
-          
-        
       }
     );
   }

@@ -1,27 +1,98 @@
-# StepinsigthInterview
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.1.1.
+# Google Maps - Open-Meteo App
 
-## Development server
+Angular app to manage the Google Maps Places API and the open-meteo.com APIs
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+- AutoComplete Service
+- Route Directions Service
+- Weather prediction for today and tomorrow
 
-## Code scaffolding
+- Search for a place to center it on the map and show the weather conditions,
+- Search for a second place to calculate the best driving route and get its weather predictions.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Acknowledgements
 
-## Running unit tests
+ - [Run the App](https://mapsapi.salderosa.com/)
+## Authors
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- [@maidastach](https://www.github.com/maidastach)
+- [Salvatore De Rosa](https://www.salderosa.com/)
 
-## Running end-to-end tests
+  
+## Deployment
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+To deploy this project you will need to add you Google API key in the index.html
 
-## Further help
+Then run
+```bash
+  ng build
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+## 🚀 About Me
+I'm a Junior developer with MERN or MEAN stacks
+
+
+
+## 🔗 Links
+[![portfolio](https://img.shields.io/badge/my_portfolio-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://salderosa.com/)
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/salvatore-de-rosa-270717/)
+
+  
+## 🛠 Skills
+Good knowledge of:
+Javascript,
+TypeScrypt,
+Html5,
+Css3,
+Node.js,
+MongoDB,
+Express.js,
+React.js,
+Angular,
+Ionic
+
+Some minor knowledge of:
+C,
+PHP,
+Mysql,
+Python,
+AWS Cloud Services
+
+  
+## Feedback
+
+If you have any feedback, please reach out to me at info@salderosa.com
+
+
+## Run Locally
+
+Clone the project
+```bash
+  git clone https://github.com/maidastach/angular-maps-meteo
+```
+
+Go to the project directory
+```bash
+  cd angular-maps-meteo
+
+Install dependencies
+```bash
+  npm install
+```
+Start the Angular server
+```bash
+  ng serve
+```
+
+Run the application at
+```bash
+  http://localhost:4200
+```
+  
+## Tech Stack
+
+**Client:** Angular, Google Maps APIs, Open-Meteo APIs
+  

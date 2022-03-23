@@ -1,7 +1,12 @@
 <div id="map-container">
     <div id="map">
       
-    </div><div *ngIf='weather' class="popup">
+    </div>
+    <div *ngIf='weatherLoading' class="popup">
+      Loding Weather...
+    </div>
+    <div *ngIf="!weatherLoading && weather" class="popup">
+      Loding Weather...
       Today<br>
       Wind Speed: {{weather.today.wind}}<br>
       Precipitations: {{weather.today.precipitation}}<br>

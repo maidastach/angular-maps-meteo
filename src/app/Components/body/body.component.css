@@ -8,11 +8,11 @@
 }
 
 .popup{
-    width: 200px;
-    height: 200px;
+    width: 300px;
+    height: 400px;
     background-color: red;
-    opacity: 0.5;
+    opacity: 1;
     position: absolute;
     top: 24%;
-    left: 0;
+    right: 0;
 }
